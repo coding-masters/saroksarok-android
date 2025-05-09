@@ -1,11 +1,13 @@
 package com.codingmasters.saroksarok.presentation.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.codingmasters.saroksarok.R
 import com.codingmasters.saroksarok.databinding.FragmentHomeBinding
 
 class HomeFragment:Fragment() {
@@ -30,7 +32,14 @@ class HomeFragment:Fragment() {
     }
 
     private fun setting(){
-        val homeAdapter = HomeAdapter()
+        val homeAdapter = HomeAdapter(
+            showDetail = {content ->  
+                val intent = Intent(requireActivity(), DetailActivity::class.java)
+                intent.putExtra("data", content)
+                startActivity(intent)
+                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.stay)
+        }
+        )
         binding.rvHome.adapter=homeAdapter
         homeAdapter.getList(homeViewModel.contents)
     }
