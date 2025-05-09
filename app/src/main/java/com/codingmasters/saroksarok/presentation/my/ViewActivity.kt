@@ -26,7 +26,7 @@ class ViewActivity:AppCompatActivity() {
         val webView = binding.wvView // 또는 findViewById(R.id.webView)
         webView.settings.javaScriptEnabled = true
 
-        val pdfUrl = "https://sksmswjsalswn-bucket.s3.amazonaws.com/nft/c17c8f6a-264b-4f97-b747-8e0a088f61a4-마담 프루스트의 비밀정원 소감문.pdf"
+        val pdfUrl = intent.getStringExtra("uri")
         val encodedUrl = Uri.encode(pdfUrl)
         val googleDocsUrl = "https://docs.google.com/gview?embedded=true&url=$encodedUrl"
 
