@@ -2,7 +2,6 @@ package com.codingmasters.saroksarok.presentation
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -10,8 +9,7 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.fragment.NavHostFragment
 import com.codingmasters.saroksarok.R
 import com.codingmasters.saroksarok.databinding.ActivityMainBinding
-import com.codingmasters.saroksarok.presentation.sassak.MintingActivity
-import timber.log.Timber
+import com.codingmasters.saroksarok.presentation.minting.MintingActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
