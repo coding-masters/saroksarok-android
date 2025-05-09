@@ -5,7 +5,7 @@ import com.codingmasters.saroksarok.R
 import com.codingmasters.saroksarok.data.Content
 
 class MyViewModel:ViewModel() {
-    val myList = listOf(
+    val registeredList = listOf(
         Content(
             image = R.drawable.image11,
             title = "쥐 퇴치의 정석",
@@ -66,6 +66,9 @@ class MyViewModel:ViewModel() {
             certified = false,
             description = "참새 등 새로 인한 작물 피해를 줄이는 아이디어를 소개합니다."
         ),
+    )
+
+    val purchasedList = listOf(
         Content(
             image = R.drawable.image17,
             title = "한국 지역별 기후와 농사",
