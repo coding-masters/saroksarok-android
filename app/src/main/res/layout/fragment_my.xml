@@ -19,12 +19,53 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="구매한 NFT"
+            android:text="마이페이지"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_registered"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="등록한 NFT"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_purchased"
+            app:layout_constraintWidth_percent="0.5"
+            android:paddingVertical="16dp"/>
+
+        <!-- 구매한 NFT 탭 -->
+        <TextView
+            android:id="@+id/tv_purchased"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="구매한 NFT"
+            android:textSize="16sp"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="@id/tv_registered"
+            app:layout_constraintStart_toEndOf="@id/tv_registered"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.5"
+            android:paddingVertical="16dp"/>
+
+        <!-- 밑줄 인디케이터 -->
+        <View
+            android:id="@+id/indicator"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="-2dp"
+            android:background="@color/primary"
+            app:layout_constraintWidth_percent="0.35"
+            app:layout_constraintTop_toBottomOf="@id/tv_registered"
+            app:layout_constraintStart_toStartOf="@id/tv_registered"
+            app:layout_constraintEnd_toEndOf="@id/tv_registered"/>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_my"
@@ -34,7 +75,7 @@
             android:orientation="vertical"
             android:nestedScrollingEnabled="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@id/indicator"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:listitem="@layout/item_content"/>
