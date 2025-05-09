@@ -6,13 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.RoundedCornersTransformation
+import com.codingmasters.saroksarok.R
 import com.codingmasters.saroksarok.data.Content
+import com.codingmasters.saroksarok.data.response_dto.ResponseAllDto
 import com.codingmasters.saroksarok.databinding.ItemContentBinding
+import retrofit2.Response
+import timber.log.Timber
 
 class HomeAdapter(
-    private val showDetail:(Content)->Unit,
+    private val showDetail:(ResponseAllDto.Data, Int)->Unit,
 ):RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
-    private val contentList = mutableListOf<Content>()
+    private val contentList = mutableListOf<ResponseAllDto.Data>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
         val binding = ItemContentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return HomeViewHolder(binding)
@@ -21,35 +25,54 @@ class HomeAdapter(
     override fun getItemCount(): Int = contentList.size
 
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
-        holder.bind(contentList[position], position)
+        holder.bind(contentList[position], position, imageList[position])
     }
 
-    fun getList(list:List<Content>){
+    fun getList(list:List<ResponseAllDto.Data>){
         contentList.clear()
         contentList.addAll(list)
         notifyDataSetChanged()
     }
 
+    private val imageList = listOf(
+        R.drawable.image1,
+        R.drawable.image2,
+        R.drawable.image3,
+        R.drawable.image4,
+        R.drawable.image5,
+        R.drawable.image6,
+        R.drawable.image7,
+        R.drawable.image8,
+        R.drawable.image9,
+        R.drawable.image10,
+    )
+
     inner class HomeViewHolder(private val binding:ItemContentBinding):RecyclerView.ViewHolder(binding.root){
-        fun bind(data:Content, position:Int){
+        fun bind(data:ResponseAllDto.Data, position:Int, image:Int){
             with(binding){
-                ivImage.load(data.image){
-                    transformations(
-                        RoundedCornersTransformation(
-                            topLeft = 60f,
-                            topRight = 60f,
-                            bottomLeft = 0f,
-                            bottomRight = 0f
+                val url = data.fileUrl
+                if (url.endsWith(".pdf", ignoreCase = true)) {
+                    ivImage.setImageResource(image) // PDF용 아이콘
+                } else {
+                    ivImage.load(url) {
+                        transformations(
+                            RoundedCornersTransformation(
+                                topLeft = 60f,
+                                topRight = 60f,
+                                bottomLeft = 0f,
+                                bottomRight = 0f
+                            )
                         )
-                    )
+                    }
                 }
                 tvTitle.text=data.title
-                tvId.text=data.id
-                tvPrice.text=data.price
+                tvId.text= binding.root.context.getString(R.string.id, data.id)
+                tvPrice.text= data.price
+                Timber.d("price: ${data.price.toString()}")
                 tvType.text=data.type
 
                 binding.ivBadge.visibility=(if(data.certified) View.VISIBLE else View.GONE)
-                clickCard(data)
+                clickCard(data, image)
 
                 val layoutParams = root.layoutParams as ViewGroup.MarginLayoutParams
                 layoutParams.topMargin = if (position == 0) dpToPx(20) else 0
@@ -58,9 +81,9 @@ class HomeAdapter(
             }
         }
 
-        private fun clickCard(data: Content){
+        private fun clickCard(data: ResponseAllDto.Data, image:Int){
             binding.cvContent.setOnClickListener{
-                showDetail(data)
+                showDetail(data, image)
             }
         }
 

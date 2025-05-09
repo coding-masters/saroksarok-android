@@ -1,7 +1,6 @@
 package com.codingmasters.saroksarok.presentation.home
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
@@ -10,7 +9,7 @@ import coil.load
 import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import com.codingmasters.saroksarok.R
-import com.codingmasters.saroksarok.data.Content
+import com.codingmasters.saroksarok.data.response_dto.ResponseAllDto
 import com.codingmasters.saroksarok.databinding.ActivityDetailBinding
 import com.codingmasters.saroksarok.presentation.my.ViewActivity
 import timber.log.Timber
@@ -29,12 +28,13 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setting() {
-        val content = intent.getParcelableExtra<Content>("data")
+        val content = intent.getParcelableExtra<ResponseAllDto.Data>("data")
+        val image=intent.getIntExtra("image", -1)
         val isBeforeMy=intent.getBooleanExtra("isBeforeMy", false)
         Timber.d("data: $content")
 
         if (content != null) {
-            showContent(content)
+            showContent(content, image)
             binding.btnBuy.isSelected=true
             if(isBeforeMy){
                 clickView(content)
@@ -47,9 +47,9 @@ class DetailActivity : AppCompatActivity() {
         clickBack()
     }
 
-    private fun showContent(content: Content) {
+    private fun showContent(content: ResponseAllDto.Data, image: Int) {
         with(binding) {
-            ivImage.load(content.image) {
+            ivImage.load(image) {
                 transformations(
                     RoundedCornersTransformation(
                         topLeft = 30f,
@@ -65,7 +65,7 @@ class DetailActivity : AppCompatActivity() {
             }
 
             tvTitle.text=content.title
-            tvId.text=content.id
+            tvId.text=getString(R.string.id, content.id)
             tvName.text=content.seller
             tvPrice.text=content.price
             tvType.text=content.type
@@ -75,7 +75,7 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun clickView(content: Content){
+    private fun clickView(content: ResponseAllDto.Data){
         binding.btnBuy.setText("조회하기")
         binding.btnBuy.setOnClickListener{
             val intent=Intent(this, ViewActivity::class.java)
@@ -85,7 +85,7 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
-    private fun clickBuy(content: Content){
+    private fun clickBuy(content: ResponseAllDto.Data){
         val intent=Intent(this, CompleteActivity::class.java)
 
         with(binding.btnBuy){

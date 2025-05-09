@@ -11,16 +11,32 @@ import android.view.View
 import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.lifecycle.lifecycleScope
 import com.codingmasters.saroksarok.R
 import com.codingmasters.saroksarok.databinding.ActivityMintingBinding
+import com.codingmasters.saroksarok.extension.MakeListState
+import com.codingmasters.saroksarok.extension.MintingState
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import timber.log.Timber
+import java.io.File
 
+@AndroidEntryPoint
 class MintingActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMintingBinding
 
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
     private lateinit var pdfLauncher: ActivityResultLauncher<Intent>
+
+    private val mintingViewModel:MintingViewModel by viewModels()
+
+    private lateinit var file:MultipartBody.Part
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,25 +120,67 @@ class MintingActivity : AppCompatActivity() {
 
                         checkFormComplete()
                     }
+
+                    val inputStream = uri?.let { contentResolver.openInputStream(it) }
+                    val fileName = uri?.let { getFileNameFromUri(it) } ?: "file.pdf"
+                    val requestBody = inputStream!!.readBytes().toRequestBody("application/pdf".toMediaTypeOrNull())
+                    file = MultipartBody.Part.createFormData("file", fileName, requestBody)
                 }
             }
 
+        val name=intent.getStringExtra("name")
 
         binding.btnMinting.setOnClickListener {
             if (binding.btnMinting.isSelected) {
-                val intent = Intent(this@MintingActivity, MintingCompleteActivity::class.java)
-                intent.putExtra("title", binding.etTitle.text.toString())
-                startActivity(intent)
-                finish()
-                overridePendingTransition(R.anim.stay, R.anim.slide_out_left)
+                if (name != null) {
+                    mintingViewModel.minting(file, binding.etTitle.text.toString(), binding.etDescription.text.toString(), name)
+                }
             }
 
         }
 
-
+        makeList()
+        minting()
         clickUpload()
         setFormListeners()
         clickBack()
+    }
+
+    private fun makeList(){
+        lifecycleScope.launch {
+            mintingViewModel.makeListState.collect{state->
+                when(state){
+                    is MakeListState.Success->{
+                        Timber.d("make list success!!")
+                        val intent = Intent(this@MintingActivity, MintingCompleteActivity::class.java)
+                        intent.putExtra("title", binding.etTitle.text.toString())
+                        startActivity(intent)
+                        finish()
+                        overridePendingTransition(R.anim.stay, R.anim.slide_out_left)
+                    }
+                    is MakeListState.Loading->{}
+                    is MakeListState.Error->{
+                        Timber.e("make list state error!!")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun minting(){
+        lifecycleScope.launch {
+            mintingViewModel.mintingState.collect{state->
+                when(state){
+                    is MintingState.Success->{
+                        mintingViewModel.makeList(state.mintingDto.data.tokenId)
+                    }
+                    is MintingState.Loading->{}
+                    is MintingState.Error->{
+                        Timber.e("minting state error!!")
+                    }
+                }
+            }
+        }
     }
 
     private fun getFileNameFromUri(uri: Uri): String? {
