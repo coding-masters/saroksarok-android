@@ -1,6 +1,7 @@
 package com.codingmasters.saroksarok.presentation.home
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
@@ -11,6 +12,7 @@ import coil.transform.RoundedCornersTransformation
 import com.codingmasters.saroksarok.R
 import com.codingmasters.saroksarok.data.Content
 import com.codingmasters.saroksarok.databinding.ActivityDetailBinding
+import com.codingmasters.saroksarok.presentation.my.ViewActivity
 import timber.log.Timber
 
 class DetailActivity : AppCompatActivity() {
@@ -28,11 +30,18 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setting() {
         val content = intent.getParcelableExtra<Content>("data")
+        val isBeforeMy=intent.getBooleanExtra("isBeforeMy", false)
         Timber.d("data: $content")
 
         if (content != null) {
             showContent(content)
-            clickBuy(content)
+            binding.btnBuy.isSelected=true
+            if(isBeforeMy){
+                clickView(content)
+            }else{
+                clickBuy(content)
+            }
+
         }
 
         clickBack()
@@ -66,14 +75,27 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun clickBuy(content: Content){
-        binding.btnBuy.isSelected=true
+    private fun clickView(content: Content){
+        binding.btnBuy.setText("조회하기")
         binding.btnBuy.setOnClickListener{
-            val intent=Intent(this, CompleteActivity::class.java)
-            intent.putExtra("content", content)
+            val intent=Intent(this, ViewActivity::class.java)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in_right, R.anim.stay)
-            finish()
+        }
+
+    }
+
+    private fun clickBuy(content: Content){
+        val intent=Intent(this, CompleteActivity::class.java)
+
+        with(binding.btnBuy){
+            setText("구매하기")
+            setOnClickListener{
+                intent.putExtra("content", content)
+                startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.stay)
+                finish()
+            }
         }
     }
 

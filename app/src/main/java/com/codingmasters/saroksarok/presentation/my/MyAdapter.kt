@@ -9,7 +9,9 @@ import coil.transform.RoundedCornersTransformation
 import com.codingmasters.saroksarok.data.Content
 import com.codingmasters.saroksarok.databinding.ItemContentBinding
 
-class MyAdapter:RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+class MyAdapter(
+    private val showDetail:(Content)->Unit,
+):RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
     private val myList = mutableListOf<Content>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -20,7 +22,7 @@ class MyAdapter:RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
     override fun getItemCount(): Int = myList.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(myList[position], position)
+        holder.bind(myList[position])
     }
 
     fun getList(list:List<Content>){
@@ -31,7 +33,7 @@ class MyAdapter:RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
     inner class MyViewHolder(private val binding: ItemContentBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: Content, position:Int) {
+        fun bind(data: Content) {
             with(binding) {
                 ivImage.load(data.image) {
                     transformations(
@@ -47,6 +49,10 @@ class MyAdapter:RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
                 tvId.text=data.id
                 tvPrice.text=data.price
                 tvType.text=data.type
+
+                cvContent.setOnClickListener{
+                    showDetail(data)
+                }
             }
         }
     }
