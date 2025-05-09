@@ -4,4 +4,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="primary">#00A86B</color>
+    <color name="text_gray">#8D8D8D</color>
+
+    <color name="btn_buy_touched_green">#159868</color>
 </resources>
