@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">saroksarok</string>
     <string name="signup_name">%s 님</string>
+    <string name="id">#%d</string>
 </resources>

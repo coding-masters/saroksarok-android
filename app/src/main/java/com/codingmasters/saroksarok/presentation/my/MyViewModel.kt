@@ -1,10 +1,88 @@
 package com.codingmasters.saroksarok.presentation.my
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.codingmasters.saroksarok.R
 import com.codingmasters.saroksarok.data.Content
+import com.codingmasters.saroksarok.domain.repository.BaseRepository
+import com.codingmasters.saroksarok.extension.MakeListState
+import com.codingmasters.saroksarok.extension.MyBuyState
+import com.codingmasters.saroksarok.extension.MyOnSaleState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
+import org.json.JSONObject
+import retrofit2.HttpException
+import timber.log.Timber
+import javax.inject.Inject
 
-class MyViewModel:ViewModel() {
+@HiltViewModel
+class MyViewModel @Inject constructor(
+    private val baseRepository: BaseRepository
+) :ViewModel() {
+    private val wallet = "0x78c5B1577da951C984804f1a2aA0049fe23b2F29"
+    private val _myOnSaleState = MutableStateFlow<MyOnSaleState>(MyOnSaleState.Loading)
+    private val _myBuyState = MutableStateFlow<MyBuyState>(MyBuyState.Loading)
+
+    val myOnSaleState: StateFlow<MyOnSaleState> = _myOnSaleState.asStateFlow()
+    val myBuyState: StateFlow<MyBuyState> = _myBuyState.asStateFlow()
+
+    fun getOnSale(){
+        viewModelScope.launch {
+            baseRepository.myOnSale(wallet).onSuccess { response->
+                _myOnSaleState.value=MyOnSaleState.Success(response)
+            }.onFailure {
+                _myOnSaleState.value=MyOnSaleState.Error("my on sale state error")
+                if (it is HttpException) {
+                    try {
+                        val errorBody: ResponseBody? = it.response()?.errorBody()
+                        val errorBodyString = errorBody?.string() ?: ""
+                        httpError(errorBodyString)
+                    } catch (e: Exception) {
+                        // JSON 파싱 실패 시 로깅
+                        Timber.e("Error parsing error body: ${e}")
+                    }
+                }
+            }
+        }
+    }
+
+    fun getBuy(){
+        viewModelScope.launch {
+            baseRepository.myBuy(wallet).onSuccess { response->
+                _myBuyState.value=MyBuyState.Success(response)
+            }.onFailure {
+                _myBuyState.value=MyBuyState.Error("my buy state error")
+                if (it is HttpException) {
+                    try {
+                        val errorBody: ResponseBody? = it.response()?.errorBody()
+                        val errorBodyString = errorBody?.string() ?: ""
+                        httpError(errorBodyString)
+                    } catch (e: Exception) {
+                        // JSON 파싱 실패 시 로깅
+                        Timber.e("Error parsing error body: ${e}")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun httpError(errorBody: String) {
+        // 전체 에러 바디를 로깅하여 디버깅
+        Log.e("searchViewModel", "Full error body: $errorBody")
+
+        // JSONObject를 사용하여 메시지 추출
+        val jsonObject = JSONObject(errorBody)
+        val errorMessage = jsonObject.optString("message", "Unknown error")
+
+        // 추출된 에러 메시지 로깅
+        Log.e("searchViewModel", "Error message: $errorMessage")
+    }
+
     val registeredList = listOf(
         Content(
             image = R.drawable.image11,

@@ -68,7 +68,9 @@ class SignupCompleteActivity:AppCompatActivity() {
                             override fun onAnimationEnd(animation: Animation?) {
                                 // STEP 4: 2초 후 Main 이동
                                 Handler(Looper.getMainLooper()).postDelayed({
-                                    startActivity(Intent(this@SignupCompleteActivity, MainActivity::class.java))
+                                    val intent=Intent(this@SignupCompleteActivity, MainActivity::class.java)
+                                    intent.putExtra("name", name)
+                                    startActivity(intent)
                                     finish()
                                     overridePendingTransition(R.anim.slide_in_right, R.anim.stay)
                                 }, 2000)
