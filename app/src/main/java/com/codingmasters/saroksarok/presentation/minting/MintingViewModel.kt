@@ -31,7 +31,7 @@ class MintingViewModel @Inject constructor(
     val makeListState: StateFlow<MakeListState> = _makeListState.asStateFlow()
 
 
-    private val walletAddress = "0x78c5B1577da951C984804f1a2aA0049fe23b2F29"
+    private val walletAddress = "0xc6D5B077365EBee96A8607aFD14D827a0d2B9dB3"
 
     fun minting(file:MultipartBody.Part, title:String, description:String, name:String){
         viewModelScope.launch {

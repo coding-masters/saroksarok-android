@@ -50,11 +50,7 @@ class HomeAdapter(
     inner class HomeViewHolder(private val binding:ItemContentBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(data:ResponseAllDto.Data, position:Int, image:Int){
             with(binding){
-                val url = data.fileUrl
-                if (url.endsWith(".pdf", ignoreCase = true)) {
-                    ivImage.setImageResource(image) // PDF용 아이콘
-                } else {
-                    ivImage.load(url) {
+                    ivImage.load(data.thumnailURL) {
                         transformations(
                             RoundedCornersTransformation(
                                 topLeft = 60f,
@@ -64,9 +60,8 @@ class HomeAdapter(
                             )
                         )
                     }
-                }
                 tvTitle.text=data.title
-                tvId.text= binding.root.context.getString(R.string.id, data.id)
+                tvId.text= binding.root.context.getString(R.string.id, data.tokenId)
                 tvPrice.text= data.price
                 Timber.d("price: ${data.price.toString()}")
                 tvType.text=data.type

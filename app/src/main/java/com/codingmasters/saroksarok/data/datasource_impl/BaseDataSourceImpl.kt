@@ -2,6 +2,7 @@ package com.codingmasters.saroksarok.data.datasource_impl
 
 import com.codingmasters.saroksarok.data.datasource.BaseDataSource
 import com.codingmasters.saroksarok.data.response_dto.ResponseAllDto
+import com.codingmasters.saroksarok.data.response_dto.ResponseBuyDto
 import com.codingmasters.saroksarok.data.response_dto.ResponseMintingDto
 import com.codingmasters.saroksarok.data.service.BaseService
 import okhttp3.MultipartBody
@@ -26,4 +27,5 @@ class BaseDataSourceImpl @Inject constructor(
 
     override suspend fun myOnSale(wallet: String): ResponseAllDto = baseService.myOnSale(wallet)
     override suspend fun myBuy(wallet: String): ResponseAllDto = baseService.myBuy(wallet)
+    override suspend fun buy(tokenId: Int, priceEth: BigDecimal, buyer: String): ResponseBuyDto = baseService.buy(tokenId, priceEth, buyer)
 }

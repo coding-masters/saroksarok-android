@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.codingmasters.saroksarok.R
 import com.codingmasters.saroksarok.data.Content
+import com.codingmasters.saroksarok.data.response_dto.ResponseAllDto
 import com.codingmasters.saroksarok.databinding.ActivityCompleteBinding
 import com.codingmasters.saroksarok.presentation.MainActivity
 
@@ -28,11 +29,11 @@ class CompleteActivity:AppCompatActivity() {
     }
 
     private fun setting(){
-        val content=intent.getParcelableExtra<Content>("content")
+        val content=intent.getParcelableExtra<ResponseAllDto.Data>("content")
         if(content!=null){
             with(binding){
                 tvTitle.text=content.title
-                tvId.text=content.id
+                tvId.text=getString(R.string.id, content.tokenId)
             }
         }
 

@@ -1,6 +1,7 @@
 package com.codingmasters.saroksarok.data.service
 
 import com.codingmasters.saroksarok.data.response_dto.ResponseAllDto
+import com.codingmasters.saroksarok.data.response_dto.ResponseBuyDto
 import com.codingmasters.saroksarok.data.response_dto.ResponseMintingDto
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -41,4 +42,11 @@ interface BaseService {
     suspend fun myBuy(
         @Query("wallet") wallet:String,
     ):ResponseAllDto
+
+    @POST("nft/buy")
+    suspend fun buy(
+        @Query("tokenId") tokenId:Int,
+        @Query("priceEth") priceEth:BigDecimal,
+        @Query("buyer") buyer:String,
+    ):ResponseBuyDto
 }
