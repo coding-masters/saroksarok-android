@@ -1,5 +1,6 @@
 package com.codingmasters.saroksarok.presentation.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
@@ -31,7 +32,9 @@ class DetailActivity : AppCompatActivity() {
 
         if (content != null) {
             showContent(content)
+            clickBuy(content)
         }
+
         clickBack()
     }
 
@@ -60,6 +63,16 @@ class DetailActivity : AppCompatActivity() {
             tvDescription.text=content.description
 
              ivBadge.visibility=(if(content.certified) View.VISIBLE else View.GONE)
+        }
+    }
+
+    private fun clickBuy(content: Content){
+        binding.btnBuy.setOnClickListener{
+            val intent=Intent(this, CompleteActivity::class.java)
+            intent.putExtra("content", content)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.stay)
+            finish()
         }
     }
 

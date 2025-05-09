@@ -24,6 +24,9 @@
 
         <activity android:name=".presentation.home.DetailActivity"
             android:exported="false"/>
+
+        <activity android:name=".presentation.home.CompleteActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>
