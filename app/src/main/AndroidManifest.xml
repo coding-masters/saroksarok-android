@@ -17,22 +17,27 @@
         android:theme="@style/Theme.Saroksarok"
         tools:targetApi="31">
 
-        <activity android:name=".presentation.LandingAcivity"
-            android:exported="true">
+        <activity android:name=".presentation.landing.LandingAcivity"
+            android:exported="false">
+
+        </activity>
+
+        <activity android:name=".presentation.landing.SignupActivity"
+            android:exported="false">
+        </activity>
+
+        <activity android:name=".presentation.landing.SignupCompleteActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".presentation.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <activity android:name=".presentation.SignupActivity"
-            android:exported="false">
-        </activity>
-        <activity
-            android:name=".presentation.MainActivity"
-            android:exported="false">
-
 
         </activity>
 
@@ -43,6 +48,9 @@
             android:exported="false"/>
 
         <activity android:name=".presentation.minting.MintingActivity"
+            android:exported="false"/>
+
+        <activity android:name=".presentation.minting.MintingCompleteActivity"
             android:exported="false"/>
 
         <activity android:name=".presentation.my.ViewActivity"
