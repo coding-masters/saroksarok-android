@@ -93,7 +93,7 @@ class MintingCompleteActivity:AppCompatActivity() {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
             finish()
-            overridePendingTransition(R.anim.stay, R.anim.slide_out_leftg)
+            overridePendingTransition(R.anim.stay, R.anim.slide_out_left)
         }
     }
 }
