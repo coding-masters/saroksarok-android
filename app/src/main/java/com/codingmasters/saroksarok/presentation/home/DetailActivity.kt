@@ -76,7 +76,7 @@ class DetailActivity : AppCompatActivity() {
             }
 
             tvTitle.text=content.title
-            tvId.text=getString(R.string.id, content.id)
+            tvId.text=getString(R.string.id, content.tokenId)
             tvName.text=content.seller
             tvPrice.text=content.price
             tvType.text=content.type
@@ -91,6 +91,7 @@ class DetailActivity : AppCompatActivity() {
         binding.btnBuy.setText("조회하기")
         binding.btnBuy.setOnClickListener{
             val intent=Intent(this, ViewActivity::class.java)
+            intent.putExtra("uri", content.fileUrl)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in_right, R.anim.stay)
         }

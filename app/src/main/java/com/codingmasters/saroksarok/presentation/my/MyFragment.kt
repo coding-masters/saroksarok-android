@@ -88,6 +88,7 @@ class MyFragment:Fragment() {
                                 // 에러 처리 (예: Toast)
                             }
                             is MyOnSaleState.Loading -> { /* 로딩 UI */ }
+                            else->{"Error"}
                         }
                     }
                 }
