@@ -2,6 +2,7 @@ package com.codingmasters.saroksarok.data.repository_impl
 
 import com.codingmasters.saroksarok.data.datasource.BaseDataSource
 import com.codingmasters.saroksarok.data.response_dto.ResponseAllDto
+import com.codingmasters.saroksarok.data.response_dto.ResponseBuyDto
 import com.codingmasters.saroksarok.data.response_dto.ResponseMintingDto
 import com.codingmasters.saroksarok.domain.repository.BaseRepository
 import okhttp3.MultipartBody
@@ -56,6 +57,18 @@ class BaseRepositoryImpl  @Inject constructor(
             baseDataSource.myBuy(wallet)
         }.onFailure {
             Timber.e("base repository my buy fail!!: $it")
+        }
+    }
+
+    override suspend fun buy(
+        tokenId: Int,
+        priceEth: BigDecimal,
+        buyer: String
+    ): Result<ResponseBuyDto> {
+        return runCatching {
+            baseDataSource.buy(tokenId, priceEth, buyer)
+        }.onFailure {
+            Timber.e("base repository buy fail!!!: $it")
         }
     }
 }

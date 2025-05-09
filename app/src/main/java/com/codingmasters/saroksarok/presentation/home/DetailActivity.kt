@@ -4,18 +4,29 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.lifecycleScope
 import coil.load
 import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import com.codingmasters.saroksarok.R
 import com.codingmasters.saroksarok.data.response_dto.ResponseAllDto
 import com.codingmasters.saroksarok.databinding.ActivityDetailBinding
+import com.codingmasters.saroksarok.extension.BuyState
 import com.codingmasters.saroksarok.presentation.my.ViewActivity
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.math.BigDecimal
 
+@AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
+
+    private val detailViewModel:DetailViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initBinds()
@@ -49,7 +60,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun showContent(content: ResponseAllDto.Data, image: Int) {
         with(binding) {
-            ivImage.load(image) {
+            ivImage.load(content.thumnailURL) {
                 transformations(
                     RoundedCornersTransformation(
                         topLeft = 30f,
@@ -76,6 +87,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun clickView(content: ResponseAllDto.Data){
+
         binding.btnBuy.setText("조회하기")
         binding.btnBuy.setOnClickListener{
             val intent=Intent(this, ViewActivity::class.java)
@@ -88,13 +100,25 @@ class DetailActivity : AppCompatActivity() {
     private fun clickBuy(content: ResponseAllDto.Data){
         val intent=Intent(this, CompleteActivity::class.java)
 
+        lifecycleScope.launch {
+            detailViewModel.buyState.collect{state->
+                when(state){
+                    is BuyState.Success -> {
+                        intent.putExtra("content", content)
+                        startActivity(intent)
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.stay)
+                        finish()
+                    }
+                    is BuyState.Loading->{}
+                    is BuyState.Error->{}
+                }
+            }
+        }
+
         with(binding.btnBuy){
             setText("구매하기")
             setOnClickListener{
-                intent.putExtra("content", content)
-                startActivity(intent)
-                overridePendingTransition(R.anim.slide_in_right, R.anim.stay)
-                finish()
+                detailViewModel.buy(content.tokenId, BigDecimal(content.price))
             }
         }
     }

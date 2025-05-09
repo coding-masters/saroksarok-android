@@ -1,6 +1,7 @@
 package com.codingmasters.saroksarok.data.datasource
 
 import com.codingmasters.saroksarok.data.response_dto.ResponseAllDto
+import com.codingmasters.saroksarok.data.response_dto.ResponseBuyDto
 import com.codingmasters.saroksarok.data.response_dto.ResponseMintingDto
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -29,4 +30,6 @@ interface BaseDataSource {
     suspend fun myBuy(
         wallet:String,
     ):ResponseAllDto
+
+    suspend fun buy(tokenId:Int, priceEth:BigDecimal, buyer:String):ResponseBuyDto
 }

@@ -51,7 +51,7 @@ class MyAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ResponseAllDto.Data, image:Int) {
             with(binding) {
-                ivImage.load(image) {
+                ivImage.load(data.thumnailURL) {
                     transformations(
                         RoundedCornersTransformation(
                             topLeft = 60f,
@@ -62,7 +62,7 @@ class MyAdapter(
                     )
                 }
                 tvTitle.text=data.title
-                tvId.text=binding.root.context.getString(R.string.id, data.id)
+                tvId.text=binding.root.context.getString(R.string.id, data.tokenId)
                 tvPrice.text=data.price
                 tvType.text=data.type
 

@@ -50,6 +50,9 @@ data class ResponseMintingDto (
         val certified: Boolean,
 
         @SerialName("status")
-        val status: String
+        val status: String,
+
+        @SerialName("thumnailURL")
+        val thumnailURL:String
     )
 }

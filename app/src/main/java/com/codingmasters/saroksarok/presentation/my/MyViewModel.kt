@@ -24,7 +24,7 @@ import javax.inject.Inject
 class MyViewModel @Inject constructor(
     private val baseRepository: BaseRepository
 ) :ViewModel() {
-    private val wallet = "0x78c5B1577da951C984804f1a2aA0049fe23b2F29"
+    private val wallet = "0xc6D5B077365EBee96A8607aFD14D827a0d2B9dB3"
     private val _myOnSaleState = MutableStateFlow<MyOnSaleState>(MyOnSaleState.Loading)
     private val _myBuyState = MutableStateFlow<MyBuyState>(MyBuyState.Loading)
 

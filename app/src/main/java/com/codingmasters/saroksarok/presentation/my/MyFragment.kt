@@ -133,9 +133,24 @@ class MyFragment:Fragment() {
         // 📌 ViewModel 데이터 요청
         if (isRegistered) {
             myViewModel.getOnSale()
+
+            // 🔽 강제 갱신: 상태값이 이미 Success일 경우 대비
+            myViewModel.myOnSaleState.value.let { state ->
+                if (state is MyOnSaleState.Success) {
+                    myAdapter.getList(state.allDto.data)
+                }
+            }
         } else {
             myViewModel.getBuy()
+
+            // 🔽 강제 갱신
+            myViewModel.myBuyState.value.let { state ->
+                if (state is MyBuyState.Success) {
+                    myAdapter.getList(state.allDto.data)
+                }
+            }
         }
+
     }
 
     /*private fun switchToTab(isRegistered: Boolean) {
