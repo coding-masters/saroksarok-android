@@ -4,21 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_radial_gradient">
+    android:background="@drawable/bg_radial_landing">
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_title_one"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:text="새싹을 기록하다\n&quot;새록새록&quot;"
-        android:textSize="30sp"
+        android:text="새싹을 기록하다"
+        android:textSize="26sp"
         android:textStyle="bold"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_title_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="&quot;새록새록&quot;"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_one"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_expert"
@@ -56,13 +68,13 @@
         android:id="@+id/imageView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="80dp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintWidth_percent="0.6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title"
-        app:srcCompat="@drawable/ic_pencil_300" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_two"
+        app:srcCompat="@drawable/ic_icon" />
 
 
 
