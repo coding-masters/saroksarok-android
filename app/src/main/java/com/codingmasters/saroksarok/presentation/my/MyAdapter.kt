@@ -2,6 +2,7 @@ package com.codingmasters.saroksarok.presentation.my
 
 import android.content.ClipData.Item
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -49,6 +50,8 @@ class MyAdapter(
                 tvId.text=data.id
                 tvPrice.text=data.price
                 tvType.text=data.type
+
+                ivBadge.visibility=(if(data.certified) View.VISIBLE else View.GONE)
 
                 cvContent.setOnClickListener{
                     showDetail(data)
