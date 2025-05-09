@@ -10,5 +10,7 @@ data class Content (
     val id:String,
     val price:String,
     val type:String,
+    val seller:String,
     val description:String,
+    val certified:Boolean,
 ):Parcelable

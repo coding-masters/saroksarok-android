@@ -1,6 +1,7 @@
 package com.codingmasters.saroksarok.presentation.home
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
@@ -53,10 +54,12 @@ class DetailActivity : AppCompatActivity() {
 
             tvTitle.text=content.title
             tvId.text=content.id
-            tvName.text="김옥순"
+            tvName.text=content.seller
             tvPrice.text=content.price
             tvType.text=content.type
             tvDescription.text=content.description
+
+             ivBadge.visibility=(if(content.certified) View.VISIBLE else View.GONE)
         }
     }
 
