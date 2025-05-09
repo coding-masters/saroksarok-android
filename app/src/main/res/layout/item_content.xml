@@ -100,6 +100,18 @@
                 app:layout_constraintStart_toEndOf="@id/tv_type_title"
                 app:layout_constraintBottom_toBottomOf="@id/tv_type_title"/>
 
+            <ImageView
+                android:id="@+id/iv_badge"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/ic_badge_circle"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintWidth_percent="0.14"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

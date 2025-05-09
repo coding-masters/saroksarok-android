@@ -1,6 +1,7 @@
 package com.codingmasters.saroksarok.presentation.home
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -47,6 +48,7 @@ class HomeAdapter(
                 tvPrice.text=data.price
                 tvType.text=data.type
 
+                binding.ivBadge.visibility=(if(data.certified) View.VISIBLE else View.GONE)
                 clickCard(data)
 
                 val layoutParams = root.layoutParams as ViewGroup.MarginLayoutParams
