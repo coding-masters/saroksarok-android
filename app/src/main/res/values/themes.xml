@@ -3,6 +3,11 @@
     <style name="Base.Theme.Saroksarok" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- 상태바를 흰색으로 -->
+        <item name="android:statusBarColor">@android:color/white</item>
+
+        <!-- 상태바 아이콘을 어둡게 (흰 배경에 맞게) -->
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="Theme.Saroksarok" parent="Base.Theme.Saroksarok" />

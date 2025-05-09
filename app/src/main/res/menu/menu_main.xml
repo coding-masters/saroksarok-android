@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_sassak"
+        android:icon="@drawable/btn_sassak_selector"
+        android:title="등록"/>
+
+    <item
+        android:id="@+id/menu_home"
+        android:icon="@drawable/btn_home_seletor"
+        android:title="홈"/>
+
+    <item
+        android:id="@+id/menu_my"
+        android:icon="@drawable/btn_my_selector"
+        android:title="마이"/>
+</menu>
