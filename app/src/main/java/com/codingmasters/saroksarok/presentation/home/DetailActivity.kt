@@ -67,6 +67,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun clickBuy(content: Content){
+        binding.btnBuy.isSelected=true
         binding.btnBuy.setOnClickListener{
             val intent=Intent(this, CompleteActivity::class.java)
             intent.putExtra("content", content)

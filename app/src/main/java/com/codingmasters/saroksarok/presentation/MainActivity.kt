@@ -1,5 +1,6 @@
 package com.codingmasters.saroksarok.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.fragment.NavHostFragment
 import com.codingmasters.saroksarok.R
 import com.codingmasters.saroksarok.databinding.ActivityMainBinding
+import com.codingmasters.saroksarok.presentation.sassak.MintingActivity
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
@@ -37,14 +39,19 @@ class MainActivity : AppCompatActivity() {
     private fun clickBnv(){
         binding.bnvMain.selectedItemId = R.id.menu_home
         navHostMap = mapOf(
-            R.id.menu_sassak to binding.fcvSassak,
             R.id.menu_home to binding.fcvHome,
             R.id.menu_my to binding.fcvMy,
         )
 
         binding.bnvMain.setOnItemSelectedListener { item ->
-            switchTab(item.itemId)
-            true
+            if (item.itemId == R.id.menu_minting) {
+                startActivity(Intent(this, MintingActivity::class.java))
+                overridePendingTransition(R.anim.slide_in_left, R.anim.stay)
+                false // false 반환 → 선택된 상태 유지 X
+            } else {
+                switchTab(item.itemId)
+                true
+            }
         }
     }
 

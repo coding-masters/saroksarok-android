@@ -27,6 +27,9 @@
 
         <activity android:name=".presentation.home.CompleteActivity"
             android:exported="false"/>
+
+        <activity android:name=".presentation.sassak.MintingActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>
