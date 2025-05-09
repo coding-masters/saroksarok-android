@@ -35,6 +35,7 @@ class CompleteActivity:AppCompatActivity() {
         val animation = AnimationUtils.loadAnimation(this, R.anim.float_up_down)
         binding.ivPuzzle.startAnimation(animation)
 
+        binding.btnBox.isSelected=true
         clickHome()
         clickBack()
     }

@@ -7,4 +7,7 @@
     <color name="text_gray">#8D8D8D</color>
 
     <color name="btn_buy_touched_green">#159868</color>
+
+    <color name="btn_upload_green">#A9E9D1</color>
+    <color name="btn_minting_gray">#D2D2D2</color>
 </resources>
