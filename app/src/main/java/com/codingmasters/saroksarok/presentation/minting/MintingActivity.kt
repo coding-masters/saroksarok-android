@@ -16,8 +16,8 @@ import androidx.constraintlayout.widget.ConstraintSet
 import com.codingmasters.saroksarok.R
 import com.codingmasters.saroksarok.databinding.ActivityMintingBinding
 
-class MintingActivity:AppCompatActivity() {
-    private lateinit var binding:ActivityMintingBinding
+class MintingActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMintingBinding
 
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
     private lateinit var pdfLauncher: ActivityResultLauncher<Intent>
@@ -28,82 +28,97 @@ class MintingActivity:AppCompatActivity() {
         setting()
     }
 
-    private fun initBinds(){
-        binding=ActivityMintingBinding.inflate(layoutInflater)
+    private fun initBinds() {
+        binding = ActivityMintingBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
 
-    private fun setting(){
-        galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val uri = result.data?.data
-                uri?.let {
-                    with(binding){
-                        ivImage.visibility=View.VISIBLE
-                        binding.ivImage.setImageURI(it)
+    private fun setting() {
+        galleryLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    val uri = result.data?.data
+                    uri?.let {
+                        with(binding) {
+                            ivImage.visibility = View.VISIBLE
+                            binding.ivImage.setImageURI(it)
+
+                            val constraintSet = ConstraintSet()
+                            constraintSet.clone(binding.clMinting) // root는 ConstraintLayout의 ID
+
+                            constraintSet.connect(
+                                btnUpload.id,
+                                ConstraintSet.TOP,
+                                ivImage.id,
+                                ConstraintSet.BOTTOM,
+                                16.dpToPx() // 마진
+                            )
+
+                            constraintSet.connect(
+                                etPrice.id,
+                                ConstraintSet.BOTTOM,
+                                btnMinting.id,
+                                ConstraintSet.TOP,
+                                80.dpToPx()
+                            )
+
+                            constraintSet.applyTo(binding.clMinting)
+                            checkFormComplete()
+                        }
+                    }
+                }
+            }
+
+        // PDF 런처
+        pdfLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    val uri = result.data?.data
+                    uri?.let {
+                        val fileName = getFileNameFromUri(it)
+                        binding.tvFileName.apply {
+                            visibility = View.VISIBLE
+                            text = fileName ?: "선택한 파일 이름 없음"
+                        }
 
                         val constraintSet = ConstraintSet()
                         constraintSet.clone(binding.clMinting) // root는 ConstraintLayout의 ID
 
                         constraintSet.connect(
-                            btnUpload.id,
+                            binding.btnUpload.id,
                             ConstraintSet.TOP,
-                            ivImage.id,
+                            binding.tvFileName.id,
                             ConstraintSet.BOTTOM,
                             16.dpToPx() // 마진
                         )
 
                         constraintSet.connect(
-                            etPrice.id,
+                            binding.etPrice.id,
                             ConstraintSet.BOTTOM,
-                            btnMinting.id,
+                            binding.btnMinting.id,
                             ConstraintSet.TOP,
                             80.dpToPx()
                         )
 
                         constraintSet.applyTo(binding.clMinting)
+
                         checkFormComplete()
                     }
                 }
             }
-        }
 
-        // PDF 런처
-        pdfLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val uri = result.data?.data
-                uri?.let {
-                    val fileName = getFileNameFromUri(it)
-                    binding.tvFileName.apply {
-                        visibility = View.VISIBLE
-                        text = fileName ?: "선택한 파일 이름 없음"
-                    }
 
-                    val constraintSet = ConstraintSet()
-                    constraintSet.clone(binding.clMinting) // root는 ConstraintLayout의 ID
-
-                    constraintSet.connect(
-                        binding.btnUpload.id,
-                        ConstraintSet.TOP,
-                        binding.tvFileName.id,
-                        ConstraintSet.BOTTOM,
-                        16.dpToPx() // 마진
-                    )
-
-                    constraintSet.connect(
-                        binding.etPrice.id,
-                        ConstraintSet.BOTTOM,
-                        binding.btnMinting.id,
-                        ConstraintSet.TOP,
-                        80.dpToPx()
-                    )
-
-                    constraintSet.applyTo(binding.clMinting)
-
-                    checkFormComplete()
-                }
+        binding.btnMinting.setOnClickListener {
+            if (binding.btnMinting.isSelected) {
+                val intent = Intent(this@MintingActivity, MintingCompleteActivity::class.java)
+                intent.putExtra("title", binding.etTitle.text.toString())
+                startActivity(intent)
+                finish()
+                overridePendingTransition(R.anim.stay, R.anim.slide_out_left)
             }
+
         }
+
 
         clickUpload()
         setFormListeners()
@@ -161,17 +176,11 @@ class MintingActivity:AppCompatActivity() {
         val descriptionFilled = binding.etDescription.text?.isNotBlank() == true
         val priceFilled = binding.etPrice.text?.isNotBlank() == true
         val imageSelected = binding.ivImage.visibility == View.VISIBLE
-        val fileSelected=binding.tvFileName.visibility==View.VISIBLE
+        val fileSelected = binding.tvFileName.visibility == View.VISIBLE
 
-        with(binding.btnMinting){
-            isSelected = titleFilled && descriptionFilled && priceFilled && (imageSelected || fileSelected)
-            if(isSelected){
-                setOnClickListener{
-                    finish()
-                    overridePendingTransition(R.anim.stay, R.anim.slide_out_left)
-                }
-            }
-        }
+
+        binding.btnMinting.isSelected =
+            titleFilled && descriptionFilled && priceFilled && (imageSelected || fileSelected)
     }
 
     private fun setFormListeners() {
@@ -180,6 +189,7 @@ class MintingActivity:AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 checkFormComplete()
             }
+
             override fun afterTextChanged(s: Editable?) {}
         }
 

@@ -101,4 +101,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)  // 항상 호출해야 함
+
+        intent?.let {
+            if (it.getBooleanExtra("goToMy", false)) {
+                binding.bnvMain.selectedItemId = R.id.menu_my
+            }
+        }
+    }
+
+
 }

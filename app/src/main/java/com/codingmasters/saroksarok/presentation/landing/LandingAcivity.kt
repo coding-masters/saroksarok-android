@@ -1,4 +1,4 @@
-package com.codingmasters.saroksarok.presentation
+package com.codingmasters.saroksarok.presentation.landing
 
 import android.content.Intent
 import android.os.Bundle
